@@ -23,3 +23,12 @@ MOVIE_SERVICE_URI: http://movies:8181
 REVIEW_SERVICE_URI: http://review:8282
 
 
+-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=-*=
+
+CRIAÇÃO DO DOCKERFILE E CRIAÇÃO DO AMBIENTE
+
+Foi criado o documento "Dockerfile" para criação da imagem da aplicação e posterior utilização no ambiente da aplicação rotten-potatoes-ms
+
+O arquivo docker-compose.yaml documenta toda a criação do ambiente da aplicação, utilizando as imagens da aplicação "movies", "review", mongodb e postgresql
+
+O acesso é relaizado através do endereço http://localhost:8080
