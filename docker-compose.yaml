@@ -1,0 +1,78 @@
+version: "2.1"
+
+networks:
+  rede_app:
+
+volumes:
+  vol_app_mongo:  
+  vol_app_postgre:
+
+services:
+  mongo:
+    image: mongo:5.0.8
+    container_name: banco_mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopwd
+    expose:
+      - "27017"
+    networks: 
+      - rede_app
+    volumes:
+      - vol_app_mongo:/data/db
+    
+  movie:
+    image: felipejm91/movie:v1
+    container_name: movie
+    depends_on:
+      - mongo
+    environment:
+      MONGODB_URI: mongodb://mongouser:mongopwd@banco_mongo:27017/admin
+    expose:
+      - "8181"
+    networks:
+      - rede_app
+    
+
+  postgre:
+    image: postgres:14.2
+    container_name: banco_postgre
+    networks:
+      - rede_app
+    volumes:
+      - vol_app_postgre:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: "Pg@123"
+      POSTGRES_USER: "pguser"
+      POSTGRES_DB: "pguser"
+    
+
+  review:
+    image: felipejm91/review:v1
+    container_name: review
+    depends_on:
+      - postgre
+    networks:
+      - rede_app
+    expose:
+      - "8282"
+    #environment:
+    #  ConnectionStrings__MyConnection: "Host=banco_postgre;Database=pguser;Username=pguser;Password=Pg@123;"
+
+
+  app_python:
+    image: felipejm91/rotten-potatoes-ms:v1
+    container_name: app_python
+    depends_on:
+      - mongo
+      - postgre
+      - movie
+      - review
+    ports:
+      - "8080:5000"
+    environment:
+      MOVIE_SERVICE_URI: "http://movie:8181"
+      REVIEW_SERVICE_URI: "http://review:8282"
+    networks:
+      - rede_app
+    
