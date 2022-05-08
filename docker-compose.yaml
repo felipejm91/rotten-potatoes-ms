@@ -55,9 +55,9 @@ services:
     networks:
       - rede_app
     expose:
-      - "8282"
-    #environment:
-    #  ConnectionStrings__MyConnection: "Host=banco_postgre;Database=pguser;Username=pguser;Password=Pg@123;"
+      - "80"
+    environment:
+      ConnectionStrings__MyConnection: "Host=banco_postgre;Database=pguser;Username=pguser;Password=Pg@123;"
 
 
   app_python:
@@ -72,7 +72,7 @@ services:
       - "8080:5000"
     environment:
       MOVIE_SERVICE_URI: "http://movie:8181"
-      REVIEW_SERVICE_URI: "http://review:8282"
+      REVIEW_SERVICE_URI: "http://review"
     networks:
       - rede_app
     
